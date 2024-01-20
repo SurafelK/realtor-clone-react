@@ -68,11 +68,11 @@ function Signin() {
        </div>
 
        <div className='w-full  flex-col space-y-4'>
-        <button className='bg-blue-600 w-full p-2 text-white font-semibold text-2xl'> Sign In </button>
+        <button className='bg-blue-600 hover:bg-blue-500 w-full p-2 text-white font-semibold text-2xl'> Sign In </button>
         <div className='flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
           OR
         </div>
-        <button className='bg-blue-600 w-full p-2 text-white font-semibold text-2xl flex items-center justify-center '>  <FcGoogle className='mx-2' /> continue with google </button>
+        <button className='bg-red-600 hover:bg-red-500 w-full p-2 text-white font-semibold text-2xl flex items-center justify-center  '>  <FcGoogle className='mx-2 bg-white rounded-full' /> continue with google </button>
        </div>
         </form>
 

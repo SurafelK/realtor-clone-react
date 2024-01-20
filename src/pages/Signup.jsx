@@ -3,8 +3,10 @@ import k from '../assets/maria-ziegler-jJnZg7vBfMs-unsplash.jpg'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-
 import { FcGoogle } from "react-icons/fc";
+import {getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import {db} from '../firebase'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 function Signup() {
 
@@ -15,8 +17,6 @@ function Signup() {
     password:"",
     name:""
   })
-
-
   const { email, password,name} = formData 
 
   function onChange(e)
@@ -27,7 +27,32 @@ function Signup() {
   }) )
   }
 
- 
+  const  onSubmit = async (e) =>
+  {
+    e.preventDefault()
+
+    try {
+
+      const auth = getAuth()
+      const userCredentials = await createUserWithEmailAndPassword(auth, email, password)
+
+      updateProfile(auth.currentUser,{
+        displayName: name
+      })
+
+      const user = userCredentials.user
+      const formDataCopy = {...formData}
+      delete formData.password
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc( db, "users", user.uid ), formDataCopy )
+      
+    } catch (error) {
+
+      console.log(error);
+      
+    }
+  }
 
   return (
   <div className='w-full p-10'>
@@ -43,7 +68,7 @@ function Signup() {
 
         <div className='md:w-1/2 flex flex-col w-full  justify-center align-middle items-center md:ml-0 ' >
 
-        <form className='w-full md:p-10 space-y-5 px-20' >
+        <form className='w-full md:p-10 space-y-5 px-20' onSubmit={onSubmit} >
 
         <input 
           type='text' 
@@ -80,11 +105,11 @@ function Signup() {
        </div>
 
        <div className='w-full  flex-col space-y-4'>
-        <button className='bg-blue-600 w-full p-2 text-white font-semibold text-2xl'> Sign In </button>
+        <button className='bg-blue-600 hover:bg-blue-500 w-full p-2 text-white font-semibold text-2xl'> Sign UP </button>
         <div className='flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
           OR
         </div>
-        <button className='bg-blue-600 w-full p-2 text-white font-semibold text-2xl flex items-center justify-center '>  <FcGoogle className='mx-2' /> continue with google </button>
+        <button className='bg-red-600 hover:bg-red-500 w-full p-2 text-white font-semibold text-2xl flex items-center justify-center  '>  <FcGoogle className='mx-2 bg-white rounded-full' /> continue with google </button>
        </div>
         </form>
 
