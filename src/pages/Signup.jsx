@@ -7,6 +7,8 @@ import { FcGoogle } from "react-icons/fc";
 import {getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import {db} from '../firebase'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Signup() {
 
@@ -19,6 +21,7 @@ function Signup() {
   })
   const { email, password,name} = formData 
 
+  const navigate = useNavigate();
   function onChange(e)
   {
   setFormData (( prevState) => ({
@@ -26,6 +29,8 @@ function Signup() {
     [e.target.id] : e.target.value
   }) )
   }
+
+  // Register using email
 
   const  onSubmit = async (e) =>
   {
@@ -46,10 +51,10 @@ function Signup() {
       formDataCopy.timestamp = serverTimestamp();
 
       await setDoc(doc( db, "users", user.uid ), formDataCopy )
-      
+      // toast.success("Registered successfully")
+      navigate("/")
     } catch (error) {
-
-      console.log(error);
+      toast.error("Something went wrong with the registration")
       
     }
   }
