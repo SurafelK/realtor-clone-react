@@ -9,6 +9,7 @@ import {db} from '../firebase'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import OAuth from '../components/OAuth';
 
 function Signup() {
 
@@ -114,7 +115,7 @@ function Signup() {
         <div className='flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
           OR
         </div>
-        <button className='bg-red-600 hover:bg-red-500 w-full p-2 text-white font-semibold text-2xl flex items-center justify-center  '>  <FcGoogle className='mx-2 bg-white rounded-full' /> continue with google </button>
+        <OAuth/>
        </div>
         </form>
 
