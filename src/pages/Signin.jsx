@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import k from '../assets/maria-ziegler-jJnZg7vBfMs-unsplash.jpg'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Signup from './Signup';
 import { FcGoogle } from "react-icons/fc";
+import OAuth from '../components/OAuth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { Toast, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Signin() {
 
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(true);
 
   const [formData, setFormData] = useState({
@@ -17,6 +22,23 @@ function Signin() {
 
 
   const { email, password} = formData 
+
+  const onSubmit = async (e)=>
+  {
+    e.preventDefault()
+    try {
+
+      const auth = getAuth()
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      if(userCredential.user)
+      {
+        navigate("/")
+      } 
+      
+    } catch (error) {
+      toast.error("Bad User credentials")
+    }
+  }
 
   function onChange(e)
   {
@@ -40,7 +62,7 @@ function Signin() {
 
         <div className='md:w-1/2 flex flex-col w-full  justify-center align-middle items-center md:ml-0 ' >
 
-        <form className='w-full md:p-10 space-y-5 px-20' >
+        <form className='w-full md:p-10 space-y-5 px-20' onSubmit={onSubmit} >
           <input 
           type='email' 
           id='email' 
@@ -72,7 +94,7 @@ function Signin() {
         <div className='flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
           OR
         </div>
-        <button className='bg-red-600 hover:bg-red-500 w-full p-2 text-white font-semibold text-2xl flex items-center justify-center  '>  <FcGoogle className='mx-2 bg-white rounded-full' /> continue with google </button>
+        <OAuth/>
        </div>
         </form>
 
