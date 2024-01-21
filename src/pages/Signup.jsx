@@ -3,7 +3,6 @@ import k from '../assets/maria-ziegler-jJnZg7vBfMs-unsplash.jpg'
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-import { FcGoogle } from "react-icons/fc";
 import {getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import {db} from '../firebase'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
