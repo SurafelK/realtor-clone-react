@@ -5,6 +5,9 @@ import { FaEyeSlash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import Signup from './Signup';
 import { FcGoogle } from "react-icons/fc";
+import { toast } from 'react-toastify';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import OAuth from '../components/OAuth';
 
 function ForgotPassword() {
 
@@ -25,6 +28,25 @@ function ForgotPassword() {
   }) )
   }
 
+  const onSubmit = async (e) =>
+  {
+    e.preventDefault()
+
+    try {
+
+      const auth = getAuth()
+      await sendPasswordResetEmail(auth, email)
+
+      toast.success("Email was sent")
+      
+    } catch (error) {
+
+      toast.error("Unable to send reset password please try again later")
+      
+    }
+
+  }
+
  
 
   return (
@@ -41,7 +63,7 @@ function ForgotPassword() {
 
         <div className='md:w-1/2 flex flex-col w-full  justify-center align-middle items-center md:ml-0 ' >
 
-        <form className='w-full md:p-10 space-y-5 px-20' >
+        <form className='w-full md:p-10 space-y-5 px-20' onSubmit={onSubmit} >
           <input 
           type='email' 
           id='email' 
@@ -57,11 +79,11 @@ function ForgotPassword() {
        </div>
 
        <div className='w-full  flex-col space-y-4'>
-        <button className='bg-blue-600 w-full p-2 text-white font-semibold text-2xl'> Sign In </button>
+        <button className='bg-blue-600 w-full p-2 text-white font-semibold text-2xl'> Send Reset Password </button>
         <div className='flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
           OR
         </div>
-        <button className='bg-blue-600 w-full p-2 text-white font-semibold text-2xl flex items-center justify-center '>  <FcGoogle className='mx-2' /> continue with google </button>
+        <OAuth/>
        </div>
         </form>
 
