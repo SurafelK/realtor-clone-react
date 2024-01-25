@@ -17,9 +17,10 @@ function Signup() {
   const [formData, setFormData] = useState({
     email:"",
     password:"",
-    name:""
+    name:"",
+    phoneNumber:""
   })
-  const { email, password,name} = formData 
+  const { email, password,name, phoneNumber} = formData 
 
   const navigate = useNavigate();
   function onChange(e)
@@ -50,8 +51,12 @@ function Signup() {
       delete formData.password
       formDataCopy.timestamp = serverTimestamp();
 
-      await setDoc(doc( db, "users", user.uid ), formDataCopy )
-      // toast.success("Registered successfully")
+      await setDoc(doc( db, "users", user.uid ), {
+        name: formDataCopy.name,
+        email: formDataCopy.email,
+        phoneNumber: phoneNumber
+      } )
+      // toast.succeess("Registered successfully")
       navigate("/")
     } catch (error) {
       toast.error("Something went wrong with the registration")
@@ -90,6 +95,22 @@ function Signup() {
 
           value={email} onChange={onChange} 
           placeholder='Email address'/>
+
+          
+          <input 
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            value={phoneNumber} onChange={onChange} 
+            placeholder="Enter 11-digit number"
+            maxLength="11"
+            pattern="[0-9]{11}"
+            title="Please enter a valid 11-digit number"
+            required
+            className="border w-96 bg-white p-4 md:ml-10 text-gray-700" 
+          />
+
+          
           
           <input type={showPassword ? "text" : "password"}
            id='password' 

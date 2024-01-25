@@ -1,9 +1,10 @@
 import { getAuth, updateProfile } from 'firebase/auth'
 import { doc, updateDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { db } from '../firebase';
+import { FcHome } from "react-icons/fc";
 
 function Profile() {
 
@@ -42,7 +43,7 @@ function Profile() {
       if(auth.currentUser.displayName !== name ){
         // Update the display name in firebase auth
 
-        const upfirebase =  await updateProfile(auth.currentUser, {
+        await updateProfile(auth.currentUser, {
           displayName: name
         });
         
@@ -82,7 +83,7 @@ function Profile() {
       <div className='flex  justify-between whitespace-nowrap ' >
         <p className=''>Do you want to change your name? <span onClick = { () => {
           changeDetail && onSubmit();
-           setChangeDetail( (prevState) => !prevState )
+          setChangeDetail( (prevState) => !prevState )
         } } 
         
         className='text-red-500 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer'> {changeDetail ? "Apply Change" : "Edit"} </span> </p>
@@ -90,6 +91,8 @@ function Profile() {
       </div>
 
       </form>
+
+      <button type="submit" className='w-full mt-5 bg-blue-600 text-white uppercase px-7 py-3 text-sm font-medium rounded-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800 ' > <Link to='/create-listing' className='flex justify-center items-center' > <FcHome className='mr-2 text-3xl bg-red-200 rounded-full p-2 border-2' /> Sell or rent your home   </Link> </button>
 
     </div>
    </section>
